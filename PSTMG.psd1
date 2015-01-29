@@ -9,7 +9,7 @@
 
 #ModuleToProcess = 'TMG.psm1'
 # Script module or binary module file associated with this manifest.
-RootModule = 'TMG.psm1'
+RootModule = 'PSTMG.psm1'
 
 # Version number of this module.
 ModuleVersion = '1.0.1'
@@ -81,7 +81,7 @@ AliasesToExport = '*'
 ModuleList = @()
 
 # List of all files packaged with this module
-FileList = 'TMG.psd1','TMG.psm1'
+FileList = 'PSTMG.psd1','PSTMG.psm1'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess
 PrivateData = ''
