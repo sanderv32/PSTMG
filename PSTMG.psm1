@@ -28,11 +28,11 @@ param([parameter(Mandatory=$true)][string]$ComputerName,
       [parameter(Mandatory=$false)][string]$Credential)
 
     $credentials = $Credential
-    if ((Test-Path Variable:\com.atpi.tmg.credentials) -and -not $Credential) {
-        $credentials = ${GLOBAL:com.atpi.tmg.credentials}
+    if ((Test-Path Variable:\$ComputerName) -and -not $Credential) {
+        $credentials = Get-Variable $ComputerName -ValueOnly
     }
-    ${GLOBAL:com.atpi.tmg.credentials} = Get-Credential $credentials
-    $credentials = ${GLOBAL:com.atpi.tmg.credentials}
+    Set-Variable $ComputerName (Get-Credential $credentials) -Scope "Global"
+    $credentials = Get-Variable $ComputerName -ValueOnly
 
     $script = {
         $TMGRoot = New-Object -comObject FPC.root
@@ -84,11 +84,11 @@ param([parameter(Mandatory=$true)][string]$ComputerName,
       [parameter(Mandatory=$true)][array]$Exceptions)
 
     $credentials = $Credential
-    if ((Test-Path Variable:\com.atpi.tmg.credentials) -and -not $Credential) {
-        $credentials = ${GLOBAL:com.atpi.tmg.credentials}
+    if ((Test-Path Variable:\$ComputerName) -and -not $Credential) {
+        $credentials = Get-Variable $ComputerName -ValueOnly
     }
-    ${GLOBAL:com.atpi.tmg.credentials} = Get-Credential $credentials
-    $credentials = ${GLOBAL:com.atpi.tmg.credentials}
+    Set-Variable $ComputerName (Get-Credential $credentials) -Scope "Global"
+    $credentials = Get-Variable $ComputerName -ValueOnly
 
     $script = {
         param([array]$Exceptions)
@@ -152,11 +152,11 @@ param([parameter(Mandatory=$true)][string]$ComputerName,
       [parameter(Mandatory=$true)][array]$Exceptions)
 
     $credentials = $Credential
-    if ((Test-Path Variable:\com.atpi.tmg.credentials) -and -not $Credential) {
-        $credentials = ${GLOBAL:com.atpi.tmg.credentials}
+    if ((Test-Path Variable:\$ComputerName) -and -not $Credential) {
+        $credentials = Get-Variable $ComputerName -ValueOnly
     }
-    ${GLOBAL:com.atpi.tmg.credentials} = Get-Credential $credentials
-    $credentials = ${GLOBAL:com.atpi.tmg.credentials}
+    Set-Variable $ComputerName (Get-Credential $credentials) -Scope "Global"
+    $credentials = Get-Variable $ComputerName -ValueOnly
 
     $script = {
         param([array]$Exceptions)
