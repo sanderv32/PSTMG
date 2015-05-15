@@ -12,7 +12,7 @@
 RootModule = 'PSTMG.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.1'
+ModuleVersion = '1.1.0'
 
 # ID used to uniquely identify this module
 GUID = 'de05d040-2c77-4c66-9943-73560ab664db'
@@ -93,4 +93,3 @@ HelpInfoURI = ''
 DefaultCommandPrefix = ''
 
 }
-

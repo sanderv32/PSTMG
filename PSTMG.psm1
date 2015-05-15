@@ -1,11 +1,11 @@
 function Get-TMGExceptions {
-<# 
+<#
  .Synopsis
     Get browser exceptions from TMG server
 
  .Description
     This function gets the exceptions from the TMG server.
-  
+
  .Parameter ComputerName
     Contains Server name to connect to.
 
@@ -13,12 +13,12 @@ function Get-TMGExceptions {
     Credentials to use.
 
  .Outputs
-    Arrays with exceptions
-    
+    NoteProperty with exceptions
+
  .Notes
     None
-    
-  .Example
+
+ .Example
 
     C:\> Get-TMGExceptions -Server tmg.contoso.local -Credentials contoso\user
 
@@ -40,24 +40,23 @@ param([parameter(Mandatory=$true)][string]$ComputerName,
         $TMGIntNet = ($TMGServer.NetworkConfiguration.Networks | ?{ $_.Name -contains "Internal"}).ClientConfig
         $TMGDirect = $TMGIntNet.Browser.Autoscript.DirectAddressDestinations
 
-        $directArray = @()
         foreach($i in $TMGDirect)
         {
-            $directArray += $i      
+            $hash = @{ Exceptions = $i }
+            New-Object -TypeName PSObject -Prop $hash
         }
-        New-Object pscustomobject -property @{ Exceptions = $directArray }
     }
     Invoke-Command -ComputerName $ComputerName -Credential $credentials -ScriptBlock $script | Select Exceptions
 }
 
 function Add-TMGExceptions {
-<# 
+<#
  .Synopsis
     Add browser exceptions to TMG server
 
  .Description
     This function adds exceptions to the TMG server.
-  
+
  .Parameter ComputerName
     Contains Server name to connect to.
 
@@ -69,10 +68,10 @@ function Add-TMGExceptions {
 
  .Outputs
     Results
-    
+
  .Notes
     None
-    
+
   .Example
 
     C:\> Add-TMGExceptions -Server tmg.contoso.local -Credentials contoso\user -Exceptions "www.contoso.com","mail.contoso.com"
@@ -101,31 +100,30 @@ param([parameter(Mandatory=$true)][string]$ComputerName,
         $directArray = $null
         foreach($i in $TMGDirect)
         {
-            $directArray += $i      
+            $directArray += $i
         }
-        $addedArray = @()
         foreach($except in $Exceptions) {
             if ( -not $directArray.Contains($except)) {
                 $TMGDirect.Add($except)
                 $TMGDirect.Save()
-                $addedArray += $except
+                $hash = @{ Results = $except }
+                New-Object -TypeName PSObject -Prop $hash
             }
         }
         $TMGServer.Save()
         $TMGServer.ApplyChanges()
-        New-Object pscustomobject -property @{ Results = $addedArray }
     }
     Invoke-Command -ComputerName $ComputerName -Credential $credentials -ArgumentList (,$Exceptions) -ScriptBlock $script | Select Results
 }
 
 function Remove-TMGExceptions {
-<# 
+<#
  .Synopsis
     Removes browser exceptions from TMG server
 
  .Description
     This function removes exceptions from the TMG server.
-  
+
  .Parameter ComputerName
     Contains Server name to connect to.
 
@@ -137,10 +135,10 @@ function Remove-TMGExceptions {
 
  .Outputs
     Results
-    
+
  .Notes
     None
-    
+
   .Example
 
     C:\> Remove-TMGExceptions -Server tmg.contoso.local -Credentials contoso\user -Exceptions "www.contoso.com","mail.contoso.com"
@@ -169,19 +167,18 @@ param([parameter(Mandatory=$true)][string]$ComputerName,
         $directArray = $null
         foreach($i in $TMGDirect)
         {
-            $directArray += $i      
+            $directArray += $i
         }
-        $addedArray = @()
         foreach($except in $Exceptions) {
             if ( $directArray.Contains($except)) {
                 $TMGDirect.Remove($except)
                 $TMGDirect.Save()
-                $addedArray += $except
+                $hash = @{ Results = $except }
+                New-Object -TypeName PSObject -Prop $hash
             }
         }
         $TMGServer.Save()
         $TMGServer.ApplyChanges()
-        New-Object pscustomobject -property @{ Results = $addedArray }
     }
     Invoke-Command -ComputerName $ComputerName -Credential $credentials -ArgumentList (,$Exceptions) -ScriptBlock $script | Select Results
 }
